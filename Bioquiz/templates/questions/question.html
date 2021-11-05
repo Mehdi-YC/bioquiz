@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/question.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>BioQuiz - questions</title>
+</head>
+
+
+<body>  
+    <div id="popup">
+        <div class="correct">
+
+        </div>
+        <h3 class="points">
+            {{qa.question.point}}
+        </h3>
+        <p class="description">
+        </p>
+        <div class="buttons">
+            <a class="infos" href="/images?images={{qa.images}}">
+                    More infos
+            </a>
+            
+                    {%if q_id == length%}
+                    <button onclick="location.href='/'" class="next">Home</button>
+                        
+                    {%else%}
+                    <button class="next">Next</button>
+                    {%endif%}
+            </button>
+        </div>
+    </div>
+    
+    <div id="menubar">
+        <a id="logo" href="/">
+            <img height="60" src="../static/media/logo1.svg" alt="">
+        </a>
+        <div id="loginbtn">
+            <button onclick="window.location.href='/'">Home</button>
+        </div>
+      </div>
+
+    <div class="container">
+        <div id="question">
+            <!-- IMAGES -->
+            <div class="title">
+                <h2>{{qa.question.Quiz_name}} : </h2>
+            </div>
+            <br>
+            <div class="images">
+                {%for img  in qa.images%}
+                <img height="200" src="../{{img}}"/>
+                {%endfor%}
+            </div>
+            <br>
+            <!-- QUESTION -->
+            <div class="question">
+                <h3>{{qa.question.question}}</h3>
+            </div>
+
+            <!-- ANSWERS -->
+            <div class="answers">
+                {%for answer in qa.answers%}
+                <br>
+                <button onclick="check_correct({{answer.id}},{{qa.question.id}})">{{answer.answer}}</button>
+                {%endfor%}
+            </div>
+            
+        </div>
+    </div>
+<div id="counter">
+    {{q_id}}/{{length}}
+</div>
+
+</body>
+<script>
+     function check_correct(answer,question){
+        $.ajax({url: "/answer?question="+question+"&answer="+answer, success: function(result){
+            $("#popup").html(result);
+            console.log(result)
+        }});
+     }
+</script>
+</html>

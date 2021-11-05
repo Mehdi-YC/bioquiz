@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioQuiz</title>
+    <link rel="stylesheet" href="/static/login.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <div id="menubar">
+    <a id="logo" href="/">
+        <img height="60" src="/static/media/logo1.svg" alt="">
+    </a>
+    <div id="loginbtn">
+        <button onclick="window.location.href='/'">Home</button>
+    </div>
+  </div>
+    
+    <div class="form">
+        {% if form.errors %}
+        {% for error in form.errors.values %}
+              <div class="alert alert-danger">
+                    <strong style="color:white">{{ error|escape }}</strong>
+              </div>
+            {% endfor %}
+        {% endif %}
+        {% if r_form.errors %}
+        {% for error in r_form.errors.values %}
+              <div class="alert alert-danger">
+                    <strong style="color:white">{{ error|escape }}</strong>
+              </div>
+            {% endfor %}
+        {% endif %}
+        <ul class="tab-group">
+          <li class="tab active"><a href="#signup">Sign Up</a></li>
+          <li class="tab"><a href="#login">Log In</a></li>
+        </ul>
+        
+        <div class="tab-content">
+          <div id="signup">   
+            
+            <form action="/register" method="post">
+              {% csrf_token %}
+            <div class="field-wrap">
+              <label>
+                Username<span class="req">*</span>
+              </label>
+              {{r_form.username}}
+            </div>
+            
+            <div class="field-wrap">
+              <label>
+                Password<span class="req">*</span>
+              </label>
+              {{r_form.password1}}
+              
+            </div>
+
+            <div class="field-wrap">
+              <label>
+                Retype the password<span class="req">*</span>
+              </label>
+              {{r_form.password2}}
+              
+            </div>
+            
+            <button type="submit" class="button button-block">Get Started</button>
+            
+            </form>
+  
+          </div>
+          
+          <div id="login">   
+            
+            <form action="/login" method="post">
+              {% csrf_token %}
+              <div class="field-wrap">
+              <label>
+                Username<span class="req">*</span>
+              </label>
+              {{form.username}}
+            </div>
+            
+            <div class="field-wrap">
+              <label>
+                Password<span class="req">*</span>
+              </label>
+              {{form.password}}
+            </div>
+            
+            <button class="button button-block">Log In</button>
+            
+            </form>
+  
+          </div>
+          
+        </div><!-- tab-content -->
+        
+  </div> <!-- /form -->
+</body>
+<script>
+    $('.form').find('input, textarea').on('keyup blur focus', function (e) {
+  
+  var $this = $(this),
+      label = $this.prev('label');
+
+	  if (e.type === 'keyup') {
+			if ($this.val() === '') {
+          label.removeClass('active highlight');
+        } else {
+          label.addClass('active highlight');
+        }
+    } else if (e.type === 'blur') {
+    	if( $this.val() === '' ) {
+    		label.removeClass('active highlight'); 
+			} else {
+		    label.removeClass('highlight');   
+			}   
+    } else if (e.type === 'focus') {
+      
+      if( $this.val() === '' ) {
+    		label.removeClass('highlight'); 
+			} 
+      else if( $this.val() !== '' ) {
+		    label.addClass('highlight');
+			}
+    }
+
+});
+
+$('.tab a').on('click', function (e) {
+  
+  e.preventDefault();
+  
+  $(this).parent().addClass('active');
+  $(this).parent().siblings().removeClass('active');
+  
+  target = $(this).attr('href');
+
+  $('.tab-content > div').not(target).hide();
+  
+  $(target).fadeIn(600);
+  
+});
+</script>
+</html>

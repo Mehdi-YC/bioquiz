@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+  <div id="menubar">
+    <a id="logo" href="/">
+      <img height="60" src="/static/media/logo1.svg" alt="">
+    </a>
+    {% if connected %}
+    <h2 id="score">Score : {{score}}</h2>
+    {% endif %}
+    <div id="loginbtn">
+      {% if connected %}
+
+      <button onclick="window.location.href='/logout'">
+        <div id="username">{{user}}</div> Disconnect
+      </button>
+      {% else %}
+      <button onclick="window.location.href='/login'">Login / Register</button>
+      {% endif %}
+    </div>
+  </div>
+  <div class="image">
+    <div class="text">
+      <h1 style="font-size:50px">Welcome to cell biology explorer</h1>
+      <h3>Learn by practicing !</h3>
+      {% if connected %}
+      <button id="randomquiz" onclick="location.href='/questions?category='+random_category()+'&q_id=1'">Try a random QUIZ</button>
+      {% else %}
+      <button id="randomquiz"  onclick="alert('you have to login first')">Try a random QUIZ</button>
+      {%endif%}
+      <button id="randomquiz" onclick="location.href='/images'">Image Gallery</button>
+    </div>
+
+  </div>
+
+  <h1>Categories</h1>
+  <div id="categories">
+    {% for category in categories %}
+      {% if connected %}
+        <div id="category" onclick="location.href='/questions?category={{category}}&q_id=1'">
+          {{category}}
+        </div>
+      {%else%}
+        <div id="category" onclick="alert('you have to login first')">
+          {{category}}
+        </div>
+      {% endif %}
+    
+    {%endfor%}
+  </div>
+  <script>
+    function random_category(){
+      let cat = {{categories|safe}}
+      let r = cat[Math.floor(Math.random() * cat.length)];
+      return r
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/images.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    
+    <title>BioQuiz - Gellery</title>
+
+</head>
+<body>
+    <div id="menubar">
+        <a id="logo" href="/">
+            <img height="60" src="../static/media/logo1.svg" alt="">
+        </a>
+        <div id="loginbtn">
+            <button onclick="window.location.href='/'">Home</button>
+        </div>
+      </div>
+    <div id="search">
+        <h1>Image Gallery</h1>
+        <input id="searchinput" type="text" placeholder="Search by name or cell type">
+    </div>
+    <section id="gallery">
+        <div class="container">
+          <ul id = "cards" class="row">
+    {%for image in images%}
+    <li name ="{{image.image_name}}" cell_type="{{image.cell_type}}"  style="list-style: none; width:100%" class="col-lg-4 mb-4">
+        
+        <div name ="{{image.image_name}}" cell_type="{{image.cell_type}}" class="card">
+          <img data-toggle="tooltip"  title="{{image.description}}" src="../{{image.image_file}}" height=200 alt="" class="card-img-top">
+          <div class="card-body">
+
+            <h5 class="card-title">{{image.image_name}}</h5>
+            <!-- <p class="card-text">{{image.description}}</p> -->
+           <h6><p style="text-decoration: underline;color: gray;">Microscopy: </p>{{image.microscopy}}</h6>
+           <h6><p style="text-decoration: underline;color: gray;">Cell type: </p>{{image.cell_type}}</h6>
+           <h6><p style="text-decoration: underline;color: gray;">Component: </p>{{image.component}}</h6>
+           <h6><p style="text-decoration: underline;color: gray;">Doi: </p>{{image.doi}}</h6>
+           <h6><p style="text-decoration: underline;color: gray;">Organism: </p>{{image.organism}}</h6>
+          </div>
+        </div>
+    </li>
+    {%endfor%}
+    </ul>
+        </div>
+        </section>
+<script>
+    //enable tooltip
+    jQuery(function () {
+        jQuery('[data-toggle="tooltip"]').tooltip()
+        })
+    //get the input field
+    let filterInput = document.getElementById('searchinput');
+    // add en event listener when the keyboard key is up
+    filterInput.addEventListener('keyup',filterImages);
+
+    
+    function filterImages(){
+        //get the search value from the input to UPPERCASE
+        let sv =  document.getElementById('searchinput').value.toUpperCase();
+
+        //get all the cards
+        let ul = document.getElementById('cards')
+        let cards = ul.querySelectorAll('li')
+
+        for (let i=0;i<cards.length;i++){
+            if (cards[i].getAttribute('name').toUpperCase().indexOf(sv) >-1 || cards[i].getAttribute('cell_type').toUpperCase().indexOf(sv)>-1){
+                cards[i].style.display="";
+
+            }
+            else{
+                cards[i].style.display="none";
+
+
+            }
+        }
+    }
+</script>
+</body>
+
+</html>

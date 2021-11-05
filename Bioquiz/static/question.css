@@ -1,0 +1,64 @@
+
+
+html {
+background-color:rgba(19, 35, 47, 1) ;
+color: white;
+padding-bottom: 50px;
+overflow-x: hidden;
+}
+
+.container{
+    padding:5px 35px;
+}
+
+img{
+    border-radius: 8px;
+    padding:5px 10px;
+}
+.images{
+    text-align: center;
+    margin: 20px auto;
+    padding:0;
+}
+
+#counter{
+    position: fixed;
+    bottom: 10px;
+    margin-left: 45%;
+    width: 10%;
+    background-color: #14A084;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+}
+
+.answers{
+    display: flex;
+    justify-content: space-around;
+}
+.answers button{
+   padding: 20px 20px;
+   background-color: #14A084;
+   color: white; 
+   border:none;
+   border-radius: 5px;
+   cursor: pointer;
+
+}
+
+@media screen and (max-width:750px){
+    .answers{
+        flex-direction: column;
+
+    }
+    .images{
+        display:flex;
+
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory;
+        margin: 0;
+        padding:0;
+    }
+    
+}
