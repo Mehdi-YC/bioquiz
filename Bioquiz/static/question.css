@@ -1,5 +1,40 @@
 
 
+
+
+
+/*POPUP*/
+#popup{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+
+    /*display: none;*/
+    background-color: rgba(109, 109, 109, 0.733);
+}
+#popup .container{
+    border-radius: 5px;
+    background-color: rgba(19, 35, 47, 1);
+    max-width: 500px;
+    margin: 150px auto;
+    padding: 10px;
+}
+.buttons{
+
+}
+.buttons a,.buttons button{
+    text-decoration: none;
+    padding: 10px 10px;
+    background-color: #14A084;
+    color: white; 
+    border:none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.buttons a:hover,.buttons button:hover{
+    background-color: #0f7c66;
+}
+
 html {
 background-color:rgba(19, 35, 47, 1) ;
 color: white;

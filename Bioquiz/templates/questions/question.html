@@ -12,28 +12,8 @@
 
 
 <body>  
-    <div id="popup">
-        <div class="correct">
+    <div class="result">
 
-        </div>
-        <h3 class="points">
-            {{qa.question.point}}
-        </h3>
-        <p class="description">
-        </p>
-        <div class="buttons">
-            <a class="infos" href="/images?images={{qa.images}}">
-                    More infos
-            </a>
-            
-                    {%if q_id == length%}
-                    <button onclick="location.href='/'" class="next">Home</button>
-                        
-                    {%else%}
-                    <button class="next">Next</button>
-                    {%endif%}
-            </button>
-        </div>
     </div>
     
     <div id="menubar">
@@ -66,8 +46,12 @@
             <!-- ANSWERS -->
             <div class="answers">
                 {%for answer in qa.answers%}
-                <br>
-                <button onclick="check_correct({{answer.id}},{{qa.question.id}})">{{answer.answer}}</button>
+                    <br>
+                    {%if user.id %}
+                        <button onclick="check_correct({{answer.id}},{{qa.question.id}})">{{answer.answer}}</button>
+                    {%else%}
+                        <button onclick="alert('you are not connected')">{{answer.answer}}</button>
+                    {%endif%}
                 {%endfor%}
             </div>
             
@@ -79,11 +63,49 @@
 
 </body>
 <script>
+    function template(sign,description,correct){
+        return   `<div id="popup">
+                <div class="container">
+                    <div class="correct">
+                        `+correct+`
+                    </div>
+                    <h3 class="points">
+                        `+sign+`{{qa.question.point}}
+                    </h3>
+                    <p class="description">
+                        `+description+`
+                    </p>
+                    <div class="buttons">
+                        <a class="infos" href="/images?images={{qa.images}}">
+                                More infos
+                        </a>
+                        
+                                {%if q_id == length%}
+                                <button onclick="location.href='/'" class="next">Home</button>
+                                    
+                                {%else%}
+                                <button class="next">Next</button>
+                                {%endif%}
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+    }
      function check_correct(answer,question){
+
         $.ajax({url: "/answer?question="+question+"&answer="+answer, success: function(result){
-            $("#popup").html(result);
+            let sign,description,correct;
+
+            if(result.val){
+                $('.result').html(template('+',result.answer.definition,'Correct'))
+            }
+            else{
+                $('.result').html(template('-',result.answer.definition,'Incorrect'))
+            }
+
             console.log(result)
         }});
      }
 </script>
+
 </html>
