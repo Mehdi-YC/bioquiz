@@ -25,7 +25,7 @@ SECRET_KEY = '8u%jhxokjbo#eii@@%2crve_lfpvg%b8jk!$hy!drbak*$4^-m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["bioquiz-app.herokuapp.com"]
+ALLOWED_HOSTS = ["bioquiz-app.herokuapp.com","localhost","127.0.0.1"]
 
 
 # Application definition

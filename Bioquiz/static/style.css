@@ -55,6 +55,18 @@ padding-right: 20px;
 #score{
   color: white;
   margin: 0;
+  padding: 0 5px;
+}
+#score-container{
+  display: flex;
+}
+@media only screen and (max-width: 600px) {
+  #score-container{
+    flex-direction: column;
+  }
+  #score{
+    line-height: 4vh;
+  }
 }
 #username {
   color: #14A084 ;
