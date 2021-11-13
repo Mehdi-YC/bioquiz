@@ -6,7 +6,11 @@ import os
 class UserDetails(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     score = models.IntegerField(default=0)
+    lvl = models.IntegerField(default=0)
 
+    # def _get_lvl(self):
+    #    return int(self.score/10)
+    # lvl = property(_get_lvl)
 
 
 class Image(models.Model):
