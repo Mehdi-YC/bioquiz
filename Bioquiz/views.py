@@ -83,6 +83,7 @@ def login(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         r_form = UserCreationForm()
+        print(r_form)
         if form.is_valid():
             user = authenticate(username=request.POST['username'], password=request.POST['password'])
             l(request,user)
@@ -105,7 +106,6 @@ def register(request):
             categories,score = get_categories(),get_user_score(request.POST['username']) 
             return  render(request,'index.html',{'user':request.POST['username'],'categories':categories,'score':score,'connected':True})
         else:
-            
             return render(request,'login.html',{'form':form,'r_form':r_form})
 
 def logout_user(request):

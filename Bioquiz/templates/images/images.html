@@ -24,19 +24,19 @@
       </div>
     <div id="search">
         <h1>Image Gallery</h1>
-        <input id="searchinput" type="text" placeholder="Search by name or cell type">
+        <input id="searchinput" type="text" placeholder="Search by Microscopy or cell type">
     </div>
     <section id="gallery">
         <div class="container">
           <ul id = "cards" class="row">
     {%for image in images%}
-    <li name ="{{image.image_name}}" cell_type="{{image.cell_type}}"  style="list-style: none; width:100%" class="col-lg-4 mb-4">
+    <li name ="{{image.microscopy}}" cell_type="{{image.cell_type}}"  style="list-style: none; width:100%" class="col-lg-4 mb-4">
         
-        <div name ="{{image.image_name}}" cell_type="{{image.cell_type}}" class="card">
+        <div name ="{{image.microscopy}}" cell_type="{{image.cell_type}}" class="card">
           <img data-toggle="tooltip"  title="{{image.description}}" src="../{{image.image_file}}" height=200 alt="" class="card-img-top">
           <div class="card-body">
 
-            <h5 class="card-title">{{image.image_name}}</h5>
+            <h5 class="card-title"></h5>
             <!-- <p class="card-text">{{image.description}}</p> -->
            <h6><p style="text-decoration: underline;color: gray;">Microscopy: </p>{{image.microscopy}}</h6>
            <h6><p style="text-decoration: underline;color: gray;">Cell type: </p>{{image.cell_type}}</h6>

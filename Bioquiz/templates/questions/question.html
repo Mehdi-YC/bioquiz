@@ -63,10 +63,10 @@
 
 </body>
 <script>
-    function template(sign,description,correct){
+    function template(sign,description,correct,color){
         return   `<div id="popup">
                 <div class="container">
-                    <div class="correct">
+                    <div style="text-align:center;color:`+color+`" class="correct">
                         `+correct+`
                     </div>
                     <h3 class="points">
@@ -97,10 +97,10 @@
             let sign,description,correct;
 
             if(result.val){
-                $('.result').html(template('+',result.answer.definition,'Correct'))
+                $('.result').html(template('+',result.answer.definition,'Correct',"green"))
             }
             else{
-                $('.result').html(template('-',result.answer.definition,'Incorrect'))
+                $('.result').html(template('-',result.answer.definition,'Incorrect',"red"))
             }
 
             console.log(result)
