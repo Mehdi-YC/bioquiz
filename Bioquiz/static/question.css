@@ -1,7 +1,9 @@
 
 
 
-
+*{
+    font-size: 20px;
+}
 
 /*POPUP*/
 #popup{
@@ -19,9 +21,10 @@
     margin: 150px auto;
     padding: 10px;
 }
-.buttons{
-
+.description,div.container:nth-child(1) > h6:nth-child(3){
+    font-size: 16px;
 }
+
 .buttons a,.buttons button{
     text-decoration: none;
     padding: 10px 10px;

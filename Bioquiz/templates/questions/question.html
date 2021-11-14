@@ -48,7 +48,7 @@
                 {%for answer in qa.answers%}
                     <br>
                     {%if user.id %}
-                        <button onclick="check_correct({{answer.id}},{{qa.question.id}})">{{answer.answer}}</button>
+                        <button onclick="check_correct('{{answer.answer}}',{{qa.question.id}},'{{qa.images|first}}','{{qa.question.category}}')">{{answer.answer}}</button>
                     {%else%}
                         <button onclick="alert('you are not connected')">{{answer.answer}}</button>
                     {%endif%}
@@ -63,7 +63,7 @@
 
 </body>
 <script>
-    function template(sign,description,correct,color){
+    function template(sign,answer,correct,color){
         return   `<div id="popup">
                 <div class="container">
                     <div style="dont-width:bold;text-align:center;color:`+color+`" class="correct">
@@ -72,11 +72,12 @@
                     <h3 class="points">
                         `+sign+`{{qa.question.point}}
                     </h3>
+                    <h6>The answer :  `+answer.answer+`</h6>
                     <p class="description">
-                        `+description+`
+                        `+answer.definition+`
                     </p>
                     <div class="buttons">
-                        <a class="infos" href="/images?images={{qa.images}}">
+                        <a class="infos" target="_blank" href="/images?images={{qa.images}}">
                                 More infos
                         </a>
                         
@@ -84,23 +85,24 @@
                                 <button onclick="location.href='/'" class="next">Home</button>
                                     
                                 {%else%}
-                                <button class="next">Next</button>
+                                <button class="next" onclick="location.href='./?category={{qa.question.category}}&q_id={{q_id|add:"+1"}}'">Next</button>
                                 {%endif%}
                         </button>
                     </div>
                 </div>
             </div>`;
     }
-     function check_correct(answer,question){
+     function check_correct(answer,question,img,category){
 
-        $.ajax({url: "/answer?question="+question+"&answer="+answer, success: function(result){
+        $.ajax({url: "/answer?category="+category+"&img="+img+"&question="+question+"&answer="+answer, success: function(result){
             let sign,description,correct;
 
             if(result.val){
-                $('.result').html(template('+',result.answer.definition,'Correct',"green"))
+                $('.result').html(template('+',result.answer,'Correct',"green"))
+                console.log(result.answer)
             }
             else{
-                $('.result').html(template('-',result.answer.definition,'Incorrect',"red"))
+                $('.result').html(template('-',result.answer,'Incorrect',"red"))
             }
 
             console.log(result)
