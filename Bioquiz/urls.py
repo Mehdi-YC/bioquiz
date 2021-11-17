@@ -22,6 +22,7 @@ import rest_framework
 from django.conf.urls import url
 from . import views
 
+#adding the routes for the app views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),

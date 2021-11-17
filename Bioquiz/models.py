@@ -3,16 +3,14 @@ from django.contrib.auth.models import User
 from django.core.files import File
 import os
 
+#extending the user informaions (automatically added after user signup with a trigger)
 class UserDetails(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     score = models.IntegerField(default=0)
     lvl = models.IntegerField(default=0)
 
-    # def _get_lvl(self):
-    #    return int(self.score/10)
-    # lvl = property(_get_lvl)
 
-
+#the rest of the database Question,Image,Answer
 class Image(models.Model):
     image_file = models.ImageField(upload_to='static/media')
     image_name = models.CharField(max_length=50,null=False)
@@ -23,6 +21,7 @@ class Image(models.Model):
     doi = models.CharField(max_length=50,null=False)
     organism = models.CharField(max_length=50,null=False)
 
+    #if we wabt to add an image remotelly (beta)
     def get_remote_image(self):
         if self.image_url and not self.image_file:
             result = urllib.urlretrieve(self.image_url)
@@ -33,12 +32,11 @@ class Image(models.Model):
             self.save()
 
 
-
-
 class Answer(models.Model):
     question_id = models.IntegerField(null=False)
     answer = models.CharField(max_length=50,null=False)
     definition = models.TextField()
+
 
 class Question(models.Model):
     question = models.CharField(max_length=200,null=False)

@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,JsonResponse
+from django import forms
 
 from .models import Question,Image,Answer,UserDetails
 from django.contrib.auth.models import User
@@ -8,7 +9,10 @@ from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import authenticate, login as l, logout
 
 import random
-import re
+import re #regular expression
+
+
+
 
 # since the categories are not stored in the database , 
 # we need to get the distinct values from the category column in the question model
@@ -20,8 +24,9 @@ def get_categories():
 
 #this function allows us to get the score of a user by it's username
 def get_user_score(name):
+    print("name : ",name)
     user = User.objects.values('id').filter(username=name)[0]
-    score = UserDetails.objects.values('score').filter(user_id=1)[0]
+    score = UserDetails.objects.values('score').filter(user_id=user["id"])[0]
     return dict(score)['score']
 
 
@@ -49,11 +54,15 @@ def list_Question(request):
     return redirect('home')
 
 
+#this is accessed vie jquery post request to send data about the answer (valid or no) and send it
+# after this , managing the user score 
+#for the lvl it is automatically calculated with a trigger
 def check_answer(request):
     category= request.GET['category']
     question_id = request.GET['question']
     img =request.GET['img']
     user_answer = request.GET['answer']
+
     img_answer = Image.objects.values().get(image_file=img)
     points = Question.objects.values('point').get(id=question_id)
     u = UserDetails.objects.get(user_id=request.user.id)
@@ -76,16 +85,21 @@ def check_answer(request):
 
 
 
-
+#getting all the images data and rendering it in images page    
 def get_images(request): 
     try:
+        #when more infos clicked , we ge the images links , we extract the id from it and filter the images
+        #to get only the images from the specific question
         images = Image.objects.all().values().filter(image_name__in=re.findall(r'\d+', request.GET['images']))
         return render(request,'images/images.html',{'images':images})
     except:
         pass
+    #ense send all the images when the user clicks on gallery
     images = Image.objects.all().values()
     return render(request,'images/images.html',{'images':images})
-#Routes
+
+
+
 def index(request):
     if request.user.is_authenticated:
         categories,score = get_categories(),get_user_score(request.user)
@@ -95,17 +109,23 @@ def index(request):
     categories = get_categories()
     return render(request,'index.html',{'categories':categories})
 
+
+
+#manage the login register and logout
 def login(request):
     if request.method == 'POST':
+        #create the login and sign in forms
         form = AuthenticationForm(data=request.POST)
         r_form = UserCreationForm()
         print(r_form)
-        if form.is_valid():
+        if form.is_valid():#log the user
+            #get the data from the post request form
             user = authenticate(username=request.POST['username'], password=request.POST['password'])
             l(request,user)
+            #get the categories (distinct values of question's categories )
             categories,score = get_categories(),get_user_score(request.POST['username'])
             return  redirect('home')
-    else:
+    else:#resend the login screen wht the error
         form = AuthenticationForm()
         r_form = UserCreationForm()
     return render(request,'login.html',{'form':form,'r_form':r_form})
@@ -113,10 +133,13 @@ def login(request):
 def register(request):
     if request.method == 'POST':
         r_form = UserCreationForm(data=request.POST)
+        print(request.POST)
         form = AuthenticationForm()
-        print((form.base_fields))
+
         if r_form.is_valid():
-            r_form.save()
+            new_user = r_form.save(commit=False)
+            new_user.email = request.POST["email"] 
+            new_user.save()#save the user if the form is valid
             user = authenticate(username=request.POST['username'], password=request.POST['password1'])
             l(request,user)
             categories,score = get_categories(),get_user_score(request.POST['username']) 
@@ -124,7 +147,7 @@ def register(request):
         else:
             return render(request,'login.html',{'form':form,'r_form':r_form})
 
-def logout_user(request):
+def logout_user(request):#logout the user and resend it to home screen
     logout(request)
     categories = get_categories()
     return  render(request,'index.html',{'categories':categories})

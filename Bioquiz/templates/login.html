@@ -46,21 +46,21 @@
             <form action="/register" method="post">
               {% csrf_token %}
             <div class="field-wrap">
-              <label>
+              <label class="active">
                 Username<span class="req">*</span>
               </label>
               {{r_form.username}}
             </div>
 
             <div class="field-wrap">
-              <label>
-                Retype the password<span class="req">*</span>
+              <label class="active">
+                Email : <span class="req">*</span>
               </label>
-              {{r_form.email}}
+              <input type="email" name="email" id="email">
             </div>
 
             <div class="field-wrap">
-              <label>
+              <label class="active">
                 Password<span class="req">*</span>
               </label>
               {{r_form.password1}}
@@ -68,7 +68,7 @@
             </div>
 
             <div class="field-wrap">
-              <label>
+              <label class="active">
                 Retype the password<span class="req">*</span>
               </label>
               {{r_form.password2}}
@@ -86,14 +86,14 @@
             <form action="/login" method="post">
               {% csrf_token %}
               <div class="field-wrap">
-              <label>
+              <label class="active">
                 Username<span class="req">*</span>
               </label>
               {{form.username}}
             </div>
             
             <div class="field-wrap">
-              <label>
+              <label class="active">
                 Password<span class="req">*</span>
               </label>
               {{form.password}}
@@ -115,15 +115,23 @@
   var $this = $(this),
       label = $this.prev('label');
 
+          
+      if( $this.val() === '' ) {
+    		label.removeClass('highlight'); 
+			} 
+      else if( $this.val() !== '' ) {
+		    label.addClass('highlight');
+			}
+      
 	  if (e.type === 'keyup') {
 			if ($this.val() === '') {
-          label.removeClass('active highlight');
+          label.removeClass('highlight');
         } else {
-          label.addClass('active highlight');
+          label.addClass('highlight');
         }
     } else if (e.type === 'blur') {
     	if( $this.val() === '' ) {
-    		label.removeClass('active highlight'); 
+    		label.removeClass('highlight'); 
 			} else {
 		    label.removeClass('highlight');   
 			}   

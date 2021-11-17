@@ -25,11 +25,13 @@ SECRET_KEY = '8u%jhxokjbo#eii@@%2crve_lfpvg%b8jk!$hy!drbak*$4^-m'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#adding the localhost and herokuapp to the allowed hosts
 ALLOWED_HOSTS = ["bioquiz-app.herokuapp.com","localhost","127.0.0.1"]
 
 
 # Application definition
 
+#adding Bioquiz
 INSTALLED_APPS = [
     'Bioquiz',
     'rest_framework',
@@ -119,4 +121,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+#the static url
 STATIC_URL = '/static/'
